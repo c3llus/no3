@@ -29,8 +29,8 @@ func CreateBaseDirectory() {
 	os.MkdirAll(baseDirectory, os.ModePerm)
 
 	// copy ZIP
-	source := FilePathCombinator(".", zipFileName)
-	destination := FilePathCombinator(baseDirectory, zipFileName)
+	source := strToPath(".", zipFileName)
+	destination := strToPath(baseDirectory, zipFileName)
 	input, err := ioutil.ReadFile(source)
 	if err != nil {
 		panic(err)
@@ -42,6 +42,7 @@ func CreateBaseDirectory() {
 	}
 }
 
+// JAWABAN A
 // Create sub directory
 func CreateSubDirectory() {
 	for i, animalType := range animalTypes {
@@ -53,8 +54,9 @@ func CreateSubDirectory() {
 	}
 }
 
+// JAWABAN B
 func UnzipFile() {
-	archive, err := zip.OpenReader(FilePathCombinator(baseDirectory, zipFileName))
+	archive, err := zip.OpenReader(strToPath(baseDirectory, zipFileName))
 	if err != nil {
 		return
 	}
@@ -62,6 +64,7 @@ func UnzipFile() {
 
 	for _, f := range archive.File {
 
+		// JAWABAN C
 		// Seperate land and water animal; delete non land or water
 		filePath := AnimalSorter(f.FileInfo().Name())
 		if filePath == "" {
@@ -101,14 +104,15 @@ func UnzipFile() {
 	}
 }
 
+// JAWABAN D
 func RemoveBirds() {
-	files, _ := ioutil.ReadDir(FilePathCombinator(baseDirectory, land))
+	files, _ := ioutil.ReadDir(strToPath(baseDirectory, land))
 	for _, file := range files {
 		fileName := fileNameFromDir.FindStringSubmatch(file.Name())[0]
 		if IsBird(&fileName) {
 
 			fmt.Println("RM: " + file.Name())
-			err := os.Remove(FilePathCombinator(baseDirectory, land, file.Name()))
+			err := os.Remove(strToPath(baseDirectory, land, file.Name()))
 			if err != nil {
 				panic(err)
 			}
@@ -116,6 +120,7 @@ func RemoveBirds() {
 	}
 }
 
+// JAWABAN E
 func ListAnimalsToTXT() {
 
 	fileTXT, err := os.Create(listTXTFileName)
@@ -125,7 +130,7 @@ func ListAnimalsToTXT() {
 	defer fileTXT.Close()
 
 	for _, animalType := range animalTypes {
-		files, _ := ioutil.ReadDir(FilePathCombinator(baseDirectory, animalType))
+		files, _ := ioutil.ReadDir(strToPath(baseDirectory, animalType))
 		for _, file := range files {
 			fileTXT.WriteString(GetStringTxt(file))
 		}

@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func FilePathCombinator(args ...string) (resp string) {
+func strToPath(args ...string) (resp string) {
 
 	for i, v := range args {
 		resp = resp + v
@@ -22,7 +22,7 @@ func AnimalSorter(fileName string) (fileDest string) {
 
 	for _, animalType := range animalTypes {
 		if strings.Contains(strings.ToLower(fileName), animalType) {
-			return FilePathCombinator(baseDirectory, animalType, fileName)
+			return strToPath(baseDirectory, animalType, fileName)
 		}
 	}
 
